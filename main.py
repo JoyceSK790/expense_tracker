@@ -1,6 +1,6 @@
 """Student Expense Tracker - application entry point.
 
-Opens the main window. Add, View (with Edit/Delete) work;
+Opens the main window. Add, View (with search, Edit/Delete) work;
 Reports is wired up in a later stage.
 """
 
@@ -17,7 +17,7 @@ def main():
 
     root = tk.Tk()
     root.title("Student Expense Tracker")
-    root.geometry("600x400")
+    root.geometry("720x450")
 
     home = ttk.Frame(root, padding=20)
     home.pack(expand=True)
@@ -37,7 +37,7 @@ def main():
         add_screen.pack(fill="both", expand=True)
 
     def show_view_screen():
-        view_screen.refresh()
+        view_screen.show_all()
         add_screen.pack_forget()
         home.pack_forget()
         view_screen.pack(fill="both", expand=True)

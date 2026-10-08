@@ -119,3 +119,48 @@ def delete_expense(expense_id, db_path=DEFAULT_DB):
     cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
     conn.commit()
     conn.close()
+
+
+def escape_like(text):
+    """Escape the LIKE wildcards % and _ so they match literally."""
+    return text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
+def search_expenses(text=None, category=None, date_from=None, date_to=None,
+                    db_path=DEFAULT_DB):
+    """Return expenses matching ALL given conditions, newest first.
+
+    - text: matches anywhere in the description (case-insensitive)
+    - category: must match exactly
+    - date_from / date_to: 'YYYY-MM-DD' strings, inclusive
+    - a blank or None value means "no limit" for that condition
+    """
+    query = ("SELECT id, amount_kobo, category, date, description"
+             " FROM expenses")
+    conditions = []
+    params = []
+
+    if text:
+        conditions.append("description LIKE ? ESCAPE '\\'")
+        params.append(f"%{escape_like(text)}%")
+    if category:
+        conditions.append("category = ?")
+        params.append(category)
+    if date_from:
+        conditions.append("date >= ?")
+        params.append(date_from)
+    if date_to:
+        conditions.append("date <= ?")
+        params.append(date_to)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    query += " ORDER BY date DESC, id DESC"
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
