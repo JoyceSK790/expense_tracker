@@ -17,3 +17,9 @@ AI mistakes:
 - Added models.py, which was unnecessary for a small app.
 - Named the date column expense_date instead of date.
 - Left out init_db() and get_expense_by_id(), which the app needs.
+
+## Entry 3: Stage 1 basic window (Day 3)
+Prompt: Pasted PROJECT_CONTEXT.md and asked for only main.py with a window titled Student Expense Tracker and three buttons that print messages.
+Result: Worked first time. Window opens and all three buttons print to the console. I changed a button label myself to check I could control the code.
+AI mistakes:
+- Added a bold title label I did not ask for (harmless, so I kept it).
