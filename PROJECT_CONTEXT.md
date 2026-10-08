@@ -32,9 +32,9 @@ Python 3, Tkinter (ttk), SQLite (sqlite3), pytest
 - No Tkinter in database.py. No SQL in screens/.
 
 ## STATUS
-- Working: Stage 1 (main.py opens a window with three buttons); Stage 2 (database.py has init_db, add_expense, get_all_expenses, CATEGORIES, naira_to_kobo, kobo_to_naira, tested and data survives restart)
+- Working: Stage 1 (main.py opens a window with three buttons); Stage 2 (database.py has init_db, add_expense, get_all_expenses, CATEGORIES, naira_to_kobo, kobo_to_naira, tested and data survives restart); Stage 3 (screens/add_expense_screen.py: Add Expense form with validation, saves to database, main.py shows it from the Add Expense button and calls init_db)
 - Broken: (nothing yet)
-- Working on now: Stage 3 Add Expense form
+- Working on now: Stage 4a View Expenses table
 
 ## PLAN (accepted)
 - screens/app.py: window controller, swaps the four screens
@@ -44,6 +44,7 @@ Python 3, Tkinter (ttk), SQLite (sqlite3), pytest
 - Table expenses: id (INTEGER PRIMARY KEY AUTOINCREMENT), amount_kobo (INTEGER NOT NULL), category (TEXT NOT NULL), date (TEXT NOT NULL, YYYY-MM-DD), description (TEXT)
 - Validation lives in add_expense_screen.py
 - Categories: Food, Transport, School fees, Books and supplies, Entertainment, Airtime and data, Health, Other
+
 
 
 

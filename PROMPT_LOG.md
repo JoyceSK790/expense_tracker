@@ -30,3 +30,12 @@ Result: database.py was correct first time: parameterized queries, integer kobo,
 AI mistakes:
 - Named the test script test_database.py, which would clash with my pytest file in tests/. I renamed it try_database.py.
 - The test script deleted the database at the end, so it never checked that data survives a restart. I added that check myself.
+
+## Entry 5: Stage 3 Add Expense form (Day 5)
+Prompt: Pasted PROJECT_CONTEXT.md, main.py and database.py. Asked for screens/add_expense_screen.py with validation, using the decimal module for the amount, and minimal changes to main.py.
+Result: The form worked and database.py was left untouched. I tested 11 kinds of bad input and saved 1500.50 as 150050 kobo.
+AI mistakes:
+- Typing NaN or Infinity as the amount crashed the app with a TypeError. Decimal accepts those values, and the decimal-places check could not compare a string with a number. My validation tests caught it, not the AI.
+- Fixed it with a debugging prompt (what happened, error, code, expected). The fix was amount.is_finite(), checked before the other amount rules.
+- Kimi's explanation was slightly wrong: it said both NaN and Infinity hit the exponent line first, but NaN fails earlier, on the <= 0 check. The fix still covered both.
+- Showed main.py as a diff instead of the full file, and listed screens/__init__.py as new when it already existed.
