@@ -47,3 +47,10 @@ AI mistakes:
 - Widened the window to 600x400 without being asked (reasonable, so I kept it).
 - Left an unused import (tkinter as tk) in the new screen file.
 - No real bugs this stage. The refresh-on-open instruction in my prompt prevented the common stale-table problem.
+
+## Entry 7: Stage 4b Edit and Delete (Day 7)
+Prompt: Pasted PROJECT_CONTEXT.md and all four code files. Asked for get_expense_by_id, update_expense and delete_expense in database.py, Edit and Delete buttons on the View screen matching rows by database id, a confirmation before delete, and Edit reusing the Add Expense form. Asked for full files, not diffs.
+Result: Worked first time. I tested the new database functions on a throwaway database first, then ran 11 manual tests (no selection, editing the second row, cancel, invalid edits, Add mode after Edit, delete with No and Yes). All passed.
+AI mistakes:
+- Said its database checks passed, but I could not see them, so I tested the functions myself before trusting that.
+- No real bugs this stage. Telling it to match rows by id (not position) and to refresh after changes in the prompt prevented the common problems.
