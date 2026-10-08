@@ -81,3 +81,41 @@ def get_all_expenses(db_path=DEFAULT_DB):
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
+
+
+def get_expense_by_id(expense_id, db_path=DEFAULT_DB):
+    """Return one expense as a dict, or None if no row has that id."""
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, amount_kobo, category, date, description"
+        " FROM expenses WHERE id = ?",
+        (expense_id,),
+    )
+    row = cursor.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def update_expense(expense_id, amount_kobo, category, date, description,
+                   db_path=DEFAULT_DB):
+    """Update an existing expense, matched by id."""
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE expenses SET amount_kobo = ?, category = ?, date = ?,"
+        " description = ? WHERE id = ?",
+        (amount_kobo, category, date, description, expense_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+def delete_expense(expense_id, db_path=DEFAULT_DB):
+    """Delete one expense, matched by id."""
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+    conn.commit()
+    conn.close()

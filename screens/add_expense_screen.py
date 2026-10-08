@@ -1,8 +1,8 @@
 """Add Expense screen.
 
-Shows the form for adding an expense (Edit mode reuses this form
-in a later stage). All input validation happens here - nothing
-reaches the database unless every field is valid.
+Shows the form for adding an expense, and is reused (pre-filled)
+for editing an existing one. All input validation happens here -
+nothing reaches the database unless every field is valid.
 """
 
 from datetime import date, datetime
@@ -14,14 +14,23 @@ import database
 
 
 class AddExpenseScreen(ttk.Frame):
-    """Form with Amount, Category, Date and Description fields."""
+    """Form with Amount, Category, Date and Description fields.
 
-    def __init__(self, parent, on_cancel):
+    Add mode: Save stores a new expense and clears the form.
+    Edit mode (started with start_edit): Save updates the expense,
+    then on_edit_done is called. Cancel goes to on_cancel in add
+    mode and on_edit_done in edit mode.
+    """
+
+    def __init__(self, parent, on_cancel, on_edit_done=None):
         super().__init__(parent, padding=20)
         self.on_cancel = on_cancel
+        self.on_edit_done = on_edit_done
+        self.edit_id = None  # None means "adding", an int means "editing"
 
-        ttk.Label(self, text="Add Expense",
-                  font=("Helvetica", 14, "bold")).pack(pady=(0, 15))
+        self.title_label = ttk.Label(self, text="Add Expense",
+                                     font=("Helvetica", 14, "bold"))
+        self.title_label.pack(pady=(0, 15))
 
         ttk.Label(self, text="Amount (naira):").pack(anchor="w")
         self.amount_var = tk.StringVar()
@@ -48,22 +57,48 @@ class AddExpenseScreen(ttk.Frame):
                    command=self.save).pack(side="left", expand=True,
                                            fill="x", padx=(0, 5))
         ttk.Button(buttons, text="Cancel",
-                   command=self.on_cancel).pack(side="left", expand=True,
-                                                fill="x", padx=(5, 0))
+                   command=self.cancel).pack(side="left", expand=True,
+                                             fill="x", padx=(5, 0))
+
+    def start_edit(self, expense):
+        """Switch to edit mode, pre-filling the form from the expense."""
+        self.edit_id = expense["id"]
+        self.title_label.configure(text="Edit Expense")
+        self.amount_var.set(f"{database.kobo_to_naira(expense['amount_kobo']):.2f}")
+        self.category_var.set(expense["category"])
+        self.date_var.set(expense["date"])
+        self.description_var.set(expense["description"])
+
+    def start_add(self):
+        """Switch back to add mode with an empty, reset form."""
+        self.edit_id = None
+        self.title_label.configure(text="Add Expense")
+        self.clear_form()
 
     def save(self):
         amount_kobo = self.validate()
         if amount_kobo is None:
             return  # invalid - nothing is saved
 
-        database.add_expense(
-            amount_kobo,
-            self.category_var.get().strip(),
-            self.date_var.get().strip(),
-            self.description_var.get().strip(),
-        )
-        messagebox.showinfo("Saved", "Expense saved.")
-        self.clear_form()
+        fields = (amount_kobo,
+                  self.category_var.get().strip(),
+                  self.date_var.get().strip(),
+                  self.description_var.get().strip())
+
+        if self.edit_id is None:
+            database.add_expense(*fields)
+            messagebox.showinfo("Saved", "Expense saved.")
+            self.clear_form()
+        else:
+            database.update_expense(self.edit_id, *fields)
+            messagebox.showinfo("Saved", "Expense saved.")
+            self.on_edit_done()
+
+    def cancel(self):
+        if self.edit_id is None:
+            self.on_cancel()
+        else:
+            self.on_edit_done()
 
     def validate(self):
         """Check every field. Return amount in kobo, or None after

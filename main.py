@@ -1,7 +1,7 @@
 """Student Expense Tracker - application entry point.
 
-Opens the main window. Add Expense and View Expenses screens
-work; Reports is wired up in a later stage.
+Opens the main window. Add, View (with Edit/Delete) work;
+Reports is wired up in a later stage.
 """
 
 import tkinter as tk
@@ -25,22 +25,32 @@ def main():
     ttk.Label(home, text="Student Expense Tracker",
               font=("Helvetica", 16, "bold")).pack(pady=(0, 20))
 
-    add_screen = AddExpenseScreen(root, on_cancel=lambda: show_home())
-    view_screen = ViewExpensesScreen(root, on_back=lambda: show_home())
+    def show_home():
+        add_screen.pack_forget()
+        view_screen.pack_forget()
+        home.pack(expand=True)
 
     def show_add_screen():
+        add_screen.start_add()
+        view_screen.pack_forget()
         home.pack_forget()
         add_screen.pack(fill="both", expand=True)
 
     def show_view_screen():
         view_screen.refresh()
+        add_screen.pack_forget()
         home.pack_forget()
         view_screen.pack(fill="both", expand=True)
 
-    def show_home():
-        add_screen.pack_forget()
+    def show_edit_screen(expense):
+        add_screen.start_edit(expense)
         view_screen.pack_forget()
-        home.pack(expand=True)
+        add_screen.pack(fill="both", expand=True)
+
+    add_screen = AddExpenseScreen(root, on_cancel=lambda: show_home(),
+                                  on_edit_done=lambda: show_view_screen())
+    view_screen = ViewExpensesScreen(root, on_back=lambda: show_home(),
+                                     on_edit=show_edit_screen)
 
     ttk.Button(home, text="Add Expense",
                command=show_add_screen).pack(fill="x", pady=5)
