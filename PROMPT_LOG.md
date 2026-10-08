@@ -39,3 +39,11 @@ AI mistakes:
 - Fixed it with a debugging prompt (what happened, error, code, expected). The fix was amount.is_finite(), checked before the other amount rules.
 - Kimi's explanation was slightly wrong: it said both NaN and Infinity hit the exponent line first, but NaN fails earlier, on the <= 0 check. The fix still covered both.
 - Showed main.py as a diff instead of the full file, and listed screens/__init__.py as new when it already existed.
+
+## Entry 6: Stage 4a View Expenses table (Day 6)
+Prompt: Pasted PROJECT_CONTEXT.md, main.py and database.py. Asked for screens/view_expenses_screen.py with a Treeview table, newest first, amounts in naira, reloading from the database on open, and no edit or delete. Asked for the full main.py, not a diff.
+Result: Worked first time. The table showed my saved expenses with correct amounts (150050 kobo shown as 1,500.50), and a new expense appeared without restarting the app.
+AI mistakes:
+- Widened the window to 600x400 without being asked (reasonable, so I kept it).
+- Left an unused import (tkinter as tk) in the new screen file.
+- No real bugs this stage. The refresh-on-open instruction in my prompt prevented the common stale-table problem.
