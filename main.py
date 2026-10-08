@@ -7,23 +7,38 @@ Screen swapping and the database are added in later stages.
 import tkinter as tk
 from tkinter import ttk
 
+import database
+from screens.add_expense_screen import AddExpenseScreen
+
 
 def main():
+    database.init_db()
+
     root = tk.Tk()
     root.title("Student Expense Tracker")
-    root.geometry("400x250")
+    root.geometry("400x350")
 
-    frame = ttk.Frame(root, padding=20)
-    frame.pack(expand=True)
+    home = ttk.Frame(root, padding=20)
+    home.pack(expand=True)
 
-    ttk.Label(frame, text="Student Expense Tracker",
+    ttk.Label(home, text="Student Expense Tracker",
               font=("Helvetica", 16, "bold")).pack(pady=(0, 20))
 
-    ttk.Button(frame, text="Add Expense",
-               command=lambda: print("Add Expense - coming soon")).pack(fill="x", pady=5)
-    ttk.Button(frame, text="View Expenses",
+    add_screen = AddExpenseScreen(root, on_cancel=lambda: show_home())
+
+    def show_add_screen():
+        home.pack_forget()
+        add_screen.pack(fill="both", expand=True)
+
+    def show_home():
+        add_screen.pack_forget()
+        home.pack(expand=True)
+
+    ttk.Button(home, text="Add Expense",
+               command=show_add_screen).pack(fill="x", pady=5)
+    ttk.Button(home, text="View Expenses",
                command=lambda: print("View Expenses - coming soon")).pack(fill="x", pady=5)
-    ttk.Button(frame, text="Reports",
+    ttk.Button(home, text="Reports",
                command=lambda: print("Reports - coming soon")).pack(fill="x", pady=5)
 
     root.mainloop()
