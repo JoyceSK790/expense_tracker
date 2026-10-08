@@ -23,3 +23,10 @@ Prompt: Pasted PROJECT_CONTEXT.md and asked for only main.py with a window title
 Result: Worked first time. Window opens and all three buttons print to the console. I changed a button label myself to check I could control the code.
 AI mistakes:
 - Added a bold title label I did not ask for (harmless, so I kept it).
+
+## Entry 4: Stage 2 database (Day 4)
+Prompt: Pasted PROJECT_CONTEXT.md and asked for database.py only, with init_db, add_expense, get_all_expenses, the categories and the kobo helpers, plus a terminal test script.
+Result: database.py was correct first time: parameterized queries, integer kobo, no Tkinter. I tested it and confirmed 2 saved expenses were still there in a fresh Python session.
+AI mistakes:
+- Named the test script test_database.py, which would clash with my pytest file in tests/. I renamed it try_database.py.
+- The test script deleted the database at the end, so it never checked that data survives a restart. I added that check myself.
