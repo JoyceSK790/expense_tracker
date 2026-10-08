@@ -34,4 +34,14 @@ Python 3, Tkinter (ttk), SQLite (sqlite3), pytest
 ## STATUS
 - Working: (nothing yet)
 - Broken: (nothing yet)
-- Working on now: requirements
+- Working on now: Stage 1 basic interface
+
+## PLAN (accepted)
+- screens/app.py: window controller, swaps the four screens
+- screens/home_screen.py, add_expense_screen.py, view_expenses_screen.py, reports_screen.py: one file per screen, UI only
+- database.py functions: init_db, add_expense, update_expense, delete_expense, get_expense_by_id, get_all_expenses, search_expenses(text, category, date_from, date_to), get_total_spending, get_month_spending, get_totals_by_category
+- database.py also holds CATEGORIES (8 fixed) and naira_to_kobo / kobo_to_naira
+- Table expenses: id (INTEGER PRIMARY KEY AUTOINCREMENT), amount_kobo (INTEGER NOT NULL), category (TEXT NOT NULL), date (TEXT NOT NULL, YYYY-MM-DD), description (TEXT)
+- Validation lives in add_expense_screen.py
+- Categories: Food, Transport, School fees, Books and supplies, Entertainment, Airtime and data, Health, Other
+
