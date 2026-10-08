@@ -54,3 +54,12 @@ Result: Worked first time. I tested the new database functions on a throwaway da
 AI mistakes:
 - Said its database checks passed, but I could not see them, so I tested the functions myself before trusting that.
 - No real bugs this stage. Telling it to match rows by id (not position) and to refresh after changes in the prompt prevented the common problems.
+
+## Entry 8: Stage 5a Search and filter (Day 8)
+Prompt: Pasted PROJECT_CONTEXT.md, database.py and view_expenses_screen.py. Asked for search_expenses in database.py with parameterized SQL, and a filter bar on the View Expenses screen with Apply and Clear, date validation, a No expenses found message, and Edit and Delete still working on filtered rows.
+Result: The filters, dates, Apply and Clear, and Edit and Delete on filtered rows all worked. I wrote a 9-line test for search_expenses and ran 15 manual tests. All passed after one fix.
+AI mistakes:
+- Searching for % or _ matched every expense, because they are LIKE wildcards and the search text was not escaped. Kimi said 8 checks passed but never tested this case. My own test caught it.
+- Fixed it with a debugging prompt (what happened, results, code, expected). The fix was an escape_like helper plus ESCAPE in the query, and the query stayed parameterized.
+- Kimi's explanation said _ matches every non-empty description. That is true for my test data, but a blank description would not match, so the explanation was slightly loose.
+- Pre-filled the search box with the real text Search description, instead of a placeholder. It is cleared when the screen opens, so I left it.
