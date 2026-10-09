@@ -63,3 +63,11 @@ AI mistakes:
 - Fixed it with a debugging prompt (what happened, results, code, expected). The fix was an escape_like helper plus ESCAPE in the query, and the query stayed parameterized.
 - Kimi's explanation said _ matches every non-empty description. That is true for my test data, but a blank description would not match, so the explanation was slightly loose.
 - Pre-filled the search box with the real text Search description, instead of a placeholder. It is cleared when the screen opens, so I left it.
+
+## Entry 9: Stage 5b Reports (Day 9)
+Prompt: Pasted PROJECT_CONTEXT.md, database.py and main.py. Asked for get_total_spending, get_month_spending and get_totals_by_category in database.py using SQL SUM (not Python or UI maths), returning 0 not None when empty, plus a Reports screen that reloads on open and a Reports button in main.py.
+Result: The database functions were correct. I tested them on a throwaway database with hand-calculated totals, including traps for the same month last year and the last day of last month. After one fix, the screen showed totals that matched my own arithmetic, and it refreshed after adding and deleting an expense.
+AI mistakes:
+- The app crashed at startup with TclError: unknown option -background. Kimi read the background colour from a ttk.Frame, which has no background option. It said all checks pass, but it had only tested the database functions, never the window. My run caught it.
+- Fixed it with a debugging prompt (what happened, error, code, expected). The fix was removing the background argument and using borderwidth=0.
+- Kimi's explanation blamed tk.Text and my platform, but the failing call was cget on the ttk.Frame, so the diagnosis was muddled even though the fix was right.
