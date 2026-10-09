@@ -89,3 +89,11 @@ AI mistakes:
 - Mentioned a screens/app.py file that does not exist in my project. It came from the old plan in my context file, because I put the screen switching in main.py.
 - Did not centre the form, which I asked for. It admitted this itself. I left it because it is only cosmetic.
 - Kimi was overloaded when I sent the polish prompt, so I had to retry.
+
+## Entry 12: README tidy (Day 12)
+Prompt: Wrote the README myself (intro and known limitations in my own words), then asked an AI tool to tidy only the wording, without adding or removing facts, commands, links or image paths.
+Result: Kimi was overloaded, so I used ChatGPT. It fixed real typos in my intro (helps helps, keeps record, keep account) and kept all the headings, commands, the clone link, image paths and the 23-test number. I compared with git diff before accepting anything.
+AI mistakes:
+- Added a compliment to my Known limitations (it is very easy to understand when viewed), which is not a limitation and made the section less honest.
+- Changed can be tested manually on Windows only, which changes what I did (I tested on Windows only). I rewrote the whole section as an honest bullet list myself.
+- Its list of changes was accurate for the typos, but I only trusted it after checking the diff.
