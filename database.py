@@ -6,6 +6,7 @@ to convert.
 """
 
 import sqlite3
+from datetime import date
 
 CATEGORIES = [
     "Food",
@@ -164,3 +165,46 @@ def search_expenses(text=None, category=None, date_from=None, date_to=None,
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
+
+
+
+def get_total_spending(db_path=DEFAULT_DB):
+    """Return the sum of all expenses in kobo, or 0 if there are none."""
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COALESCE(SUM(amount_kobo), 0) FROM expenses")
+    total = cursor.fetchone()[0]
+    conn.close()
+    return total
+
+
+def get_month_spending(db_path=DEFAULT_DB):
+    """Return the sum for the current calendar month in kobo, or 0.
+
+    Matches the same month AND year as today, e.g. '2026-10'.
+    """
+    month = date.today().strftime("%Y-%m")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT COALESCE(SUM(amount_kobo), 0) FROM expenses"
+        " WHERE strftime('%Y-%m', date) = ?",
+        (month,),
+    )
+    total = cursor.fetchone()[0]
+    conn.close()
+    return total
+
+
+def get_totals_by_category(db_path=DEFAULT_DB):
+    """Return a list of (category, total_kobo) for categories that
+    have expenses, highest total first."""
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT category, SUM(amount_kobo) FROM expenses"
+        " GROUP BY category ORDER BY SUM(amount_kobo) DESC"
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
