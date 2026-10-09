@@ -79,3 +79,13 @@ AI mistakes:
 - Said 22 tests would pass, but the file has 23. It stated a number it had not counted.
 - Said it verified the assertions with a plain harness because pytest was not installed in its sandbox. I could not see that, so the run on my own computer was what counted.
 - No bugs in the tests themselves. The prompt rules (temporary database, specific values, dates built from today) prevented the usual weak-test problems.
+
+## Entry 11: Home screen and polish (Day 11)
+Prompt 1: Pasted PROJECT_CONTEXT.md, main.py and database.py. Asked for screens/home_screen.py showing total spending and this month in naira using the existing database functions, reloading every time Home is shown, and main.py using it.
+Result 1: Worked first time. The figures matched my hand-checked totals and stayed current after adding, editing and deleting an expense.
+Prompt 2: Pasted PROJECT_CONTEXT.md and add_expense_screen.py. Asked to improve layout and usability of that screen only, keeping all behaviour and method names.
+Result 2: Worked. I tested both add mode and edit mode and everything passed.
+AI mistakes:
+- Mentioned a screens/app.py file that does not exist in my project. It came from the old plan in my context file, because I put the screen switching in main.py.
+- Did not centre the form, which I asked for. It admitted this itself. I left it because it is only cosmetic.
+- Kimi was overloaded when I sent the polish prompt, so I had to retry.
