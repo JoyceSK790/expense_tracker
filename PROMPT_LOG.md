@@ -71,3 +71,11 @@ AI mistakes:
 - The app crashed at startup with TclError: unknown option -background. Kimi read the background colour from a ttk.Frame, which has no background option. It said all checks pass, but it had only tested the database functions, never the window. My run caught it.
 - Fixed it with a debugging prompt (what happened, error, code, expected). The fix was removing the background argument and using borderwidth=0.
 - Kimi's explanation blamed tk.Text and my platform, but the failing call was cget on the ttk.Frame, so the diagnosis was muddled even though the fix was right.
+
+## Entry 10: pytest tests (Day 10)
+Prompt: Pasted PROJECT_CONTEXT.md and database.py. Asked for pytest tests that use a temporary database for every test, check specific values, build the month-test dates from today's date, and include the % and _ search cases. Told it not to modify database.py.
+Result: The tests were good. All 23 passed on my computer. To check they could really fail, I broke database.py on purpose (month total counting every month) and one test failed, then I restored the file and confirmed 23 passed again.
+AI mistakes:
+- Said 22 tests would pass, but the file has 23. It stated a number it had not counted.
+- Said it verified the assertions with a plain harness because pytest was not installed in its sandbox. I could not see that, so the run on my own computer was what counted.
+- No bugs in the tests themselves. The prompt rules (temporary database, specific values, dates built from today) prevented the usual weak-test problems.
